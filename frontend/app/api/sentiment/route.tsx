@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import config from "@/app/config"
 
 export async function POST(req: NextRequest) {
 	try {
-		console.log("req.body", req.body)
 		let { text } = await req.json();
 		if (!text) {
 			return NextResponse.json({ error: "Requires .text attribute in request body" }, { status: 400 });
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 		text = text.trim()
 
 		// fetch response from internel server (Flask server running the classification)
-		const response = await fetch("http://localhost:5000/api/sentiment", {
+		const response = await fetch(`${config.backend_uri}/api/sentiment`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
